@@ -56,6 +56,10 @@
       "type": "STRING",
       "value": ".pragma"
     },
+    "AUTOINC": {
+      "type": "STRING",
+      "value": "autoinc"
+    },
     "BW_AND": {
       "type": "STRING",
       "value": "band"
@@ -1826,6 +1830,23 @@
         {
           "type": "SYMBOL",
           "name": "DOLLAR"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "AUTOINC"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "LPAREN"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "RPAREN"
+            }
+          ]
         },
         {
           "type": "SYMBOL",

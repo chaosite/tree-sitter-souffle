@@ -1,7 +1,5 @@
-
 module.exports = grammar({
     name: 'souffle',
-  
 	  extras: $ => [
 	  	/\s/,
 	  	$.COMMENT,
@@ -22,6 +20,7 @@ module.exports = grammar({
       SYMBOL_TYPE: $ => ".symbol_type",
       OVERRIDE: $ => ".override",
       PRAGMA: $ => ".pragma",
+      AUTOINC: $ => "autoinc",
       BW_AND: $ => "band",
       BW_OR: $ => "bor",
       BW_XOR: $ => "bxor",
@@ -42,7 +41,7 @@ module.exports = grammar({
       MEAN: $ => "mean",
       CAT: $ => "cat",
       ORD: $ => "ord",
-	  RANGE: $ => "range",
+      RANGE: $ => "range",
       STRLEN: $ => "strlen",
       SUBSTR: $ => "substr",
       TCONTAINS: $ => "contains",
@@ -66,8 +65,8 @@ module.exports = grammar({
       FALSE: $ => "false",
       TOSTRING: $ => "to_string",
       TONUMBER: $ => "to_number",
-	  TOFLOAT: $ => "to_float",
-	  TOUNSIGNED: $ => "to_unsigned",
+      TOFLOAT: $ => "to_float",
+      TOUNSIGNED: $ => "to_unsigned",
       PLAN: $ => ".plan",
       PIPE: $ => "|",
       LBRACKET: $ => "[",
@@ -98,9 +97,9 @@ module.exports = grammar({
       GT: $ => ">",
       IF: $ => ":-",
 
-	  INPUT: $ => 'INPUT',
-	  OUTPUT: $ => 'OUTPUT',
-	  CPP_VAR: $ => /CPP_[A-Z]*/,
+      INPUT: $ => 'INPUT',
+      OUTPUT: $ => 'OUTPUT',
+      CPP_VAR: $ => /CPP_[A-Z]*/,
 
 	  io_macro: $ => seq(
 		choice($.INPUT, $.OUTPUT, $.CPP_VAR),
@@ -112,19 +111,19 @@ module.exports = grammar({
       IDENT: $ => choice(
         /\+underscore_\d+/,
         /@generator_\d+/,
-        /[?a-zA-Z]/, 
+        /[?a-zA-Z]/,
         /[_?a-zA-Z][_?a-zA-Z\d]+/,
       ),
 
       NUMBER: $ => choice(
-        /\d+/, 
+        /\d+/,
         /0b\d+/,
         /0x\d+/,
       ),
 
       FLOAT: $ => /\d+\.\d+/,
 
-      STRING: $ => /"[^"]*"/,
+      STRING: $ => /"[^"]*"/, // "/
 
       unit: $ => choice(
 		$.io_macro,
@@ -323,7 +322,8 @@ module.exports = grammar({
         $.FLOAT,
         $.NUMBER,
         $.UNDERSCORE,
-        $.DOLLAR,
+        $.DOLLAR, // Deprecated
+        seq($.AUTOINC, $.LPAREN, $.RPAREN),
         $.IDENT,
         seq($.LPAREN, $.arg, $.RPAREN),
         seq($.AS, $.LPAREN, $.arg, $.COMMA, $.identifier, $.RPAREN),
@@ -367,17 +367,17 @@ module.exports = grammar({
         seq($.MAX, $.arg, $.COLON, $.LBRACE, $.body, $.RBRACE),
       ),
 
-	  functor_built_in: $ => choice(
-		$.CAT,
-		$.ORD,
-		$.RANGE,
-		$.STRLEN,
-		$.SUBSTR,
-		$.TOFLOAT,
-		$.TONUMBER,
-		$.TOSTRING,
-		$.TOUNSIGNED,
-	  ),
+      functor_built_in: $ => choice(
+	$.CAT,
+	$.ORD,
+	$.RANGE,
+	$.STRLEN,
+	$.SUBSTR,
+	$.TOFLOAT,
+	$.TONUMBER,
+	$.TOSTRING,
+	$.TOUNSIGNED,
+      ),
 
       component: $ => seq($.component_head, $.LBRACE, optional(repeat1($.component_body)), $.RBRACE),
 

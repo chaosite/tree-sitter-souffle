@@ -26,6 +26,10 @@
           "named": true
         },
         {
+          "type": "AUTOINC",
+          "named": true
+        },
+        {
           "type": "BW_AND",
           "named": true
         },
@@ -1605,6 +1609,10 @@
   },
   {
     "type": "AT",
+    "named": true
+  },
+  {
+    "type": "AUTOINC",
     "named": true
   },
   {
